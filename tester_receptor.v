@@ -7,8 +7,8 @@ module tb_mdio_receptor;
     reg MDIO_OE;
     wire MDIO_DONE;
     wire MDIO_IN;
-    wire [4:0] ADDR;
-    wire [15:0] WR_DATA;
+    reg [4:0] ADDR;
+    reg [15:0] WR_DATA;
     reg [15:0] RD_DATA;
     wire WR_STB;
 

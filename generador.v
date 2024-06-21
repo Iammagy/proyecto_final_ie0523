@@ -30,8 +30,33 @@ module mdio_transaction_generator (
             mdc <= ~mdc;
         end
     end
+// La maquina de estados se rige por el clk y la comunicacion por el "mdc"
+//por eso se hizo dos always paralelos. Para asegurar que lo que comunica sea regido por mdc
 
-    // State machine for MDIO transaction
+
+//comunicacion usando el clk: mdc
+always @(posedge mdc) begin     
+    case (state)
+        READ: begin
+            if (count < 32) begin //READ
+                if (count >= 16) begin
+                    mdio_oe <= 0;
+                    rd_data[31 - count] <= mdio_in; 
+                end
+                count <= count + 1;
+            end 
+        end
+        WRITE: begin // escritura en alto los primeros 16 bits
+            if (count < 32) begin
+                mdio_out <= t_data[31 - count];
+                count <= count + 1;
+            end 
+        end
+    endcase
+end
+ 
+
+// Maquina de estados del resto:
     always @(posedge clk or negedge reset) begin
         if (!reset) begin // FIX: Reset must be active in low.
             state <= IDLE;
@@ -40,7 +65,7 @@ module mdio_transaction_generator (
             rd_data <= 0;
             data_rdy <= 0;
             count <= 0;
-        end else begin
+        end else begin 
             case (state)
                 IDLE: begin // quiza idle y star se podria hacer en un mismo estado. 
                     if (mdio_start == 1) begin // porque cuand mdio_star esta en 1 se pasa a star inmed.
@@ -55,9 +80,10 @@ module mdio_transaction_generator (
                     end else if (t_data[29:28] == 2'b01) begin  // Write
                         state <= WRITE;
                     end else begin
-                        state <= DONE;  //??? porque done en el idle?
+                        state <= DONE; 
                     end
                 end
+
                 READ: begin
                     if (count < 32) begin //READ
                         if (count<16) begin
@@ -65,29 +91,25 @@ module mdio_transaction_generator (
                         end
                         if (count >= 16) begin
                             mdio_oe <= 0;
-                            rd_data[31 - count] <= mdio_in; //rd data es de 16 bits, no de 32
-                                                            // hacer [31- count] produciria un error?
                         end
-                        count <= count + 1;
                     end else begin
                         data_rdy <= 1;
                         state <= DONE;
                     end
                 end
-                WRITE: begin // escritura en alto los primeros 16 bits
+                WRITE: begin
                     mdio_oe <= 1;
-                    if (count < 32) begin
-                        mdio_out <= t_data[31 - count];
-                        count <= count + 1;
-                    end else begin
+                    if (count >= 32) begin
                         state <= DONE;
                         mdio_oe <= 0;
                     end
                 end
+
                 DONE: begin
                     state <= IDLE;
                 end
-            endcase
+        endcase
         end
     end
+
 endmodule

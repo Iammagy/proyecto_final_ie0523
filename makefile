@@ -1,7 +1,7 @@
-banco:
-	iverilog -o tb.vvp testbench1.v 
+all:
+	iverilog -o tb.vvp tb_generador.v 
 	vvp tb.vvp
-	gtkwave tb.vcd
+	gtkwave signals.gtkw
 
 clean:
 	rm -rf tb.vcd tb.vvp
