@@ -32,30 +32,40 @@ module mdio_transaction_generator (
     end
 // La maquina de estados se rige por el clk y la comunicacion por el "mdc"
 //por eso se hizo dos always paralelos. Para asegurar que lo que comunica sea regido por mdc
-
-
+    
 //comunicacion usando el clk: mdc
 always @(posedge mdc) begin     
     case (state)
         READ: begin
             if (count < 32) begin //READ
-                if (count >= 16) begin
-                    mdio_oe <= 0;
-                    rd_data[31 - count] <= mdio_in; 
+                if (count<16) begin
+                    mdio_oe <= 1;
                 end
-                count <= count + 1;
+                else begin
+                    mdio_oe <= 0;
+                    rd_data[31 - count] <= mdio_in;
+                end
+                 count <= count + 1;
             end 
+            else begin
+                data_rdy <= 1;
+                state <= DONE;
+            end
         end
-        WRITE: begin // escritura en alto los primeros 16 bits
+        WRITE: begin // escritura en alto los primeros 16 bits 
+            mdio_oe <= 1;
             if (count < 32) begin
                 mdio_out <= t_data[31 - count];
                 count <= count + 1;
-            end 
+            end
+            else begin
+                state <= DONE;
+                mdio_oe <= 0;
+            end
         end
     endcase
 end
- 
-
+    
 // Maquina de estados del resto:
     always @(posedge clk or negedge reset) begin
         if (!reset) begin // FIX: Reset must be active in low.
@@ -83,33 +93,10 @@ end
                         state <= DONE; 
                     end
                 end
-
-                READ: begin
-                    if (count < 32) begin //READ
-                        if (count<16) begin
-                            mdio_oe <= 1;
-                        end
-                        if (count >= 16) begin
-                            mdio_oe <= 0;
-                        end
-                    end else begin
-                        data_rdy <= 1;
-                        state <= DONE;
-                    end
-                end
-                WRITE: begin
-                    mdio_oe <= 1;
-                    if (count >= 32) begin
-                        state <= DONE;
-                        mdio_oe <= 0;
-                    end
-                end
-
                 DONE: begin
                     state <= IDLE;
                 end
         endcase
         end
     end
-
 endmodule
