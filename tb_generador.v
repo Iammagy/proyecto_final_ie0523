@@ -7,10 +7,19 @@ module mdio_generador_testbench;
     wire mdio_start;
     wire [31:0] t_data;
     wire mdio_in;
+    wire mdc;`include "generador.v"
+`include "tester_generador.v"
+
+module mdio_generador_testbench;
+    wire clk;
+    wire reset;
+    wire mdio_start;
+    wire [31:0] t_data;
+    wire mdio_in;
     wire mdc;
     wire mdio_out;
     wire mdio_oe;
-    wire [16:0]rd_data;
+    wire [15:0]rd_data;
     wire data_rdy;
 
     initial begin
@@ -28,7 +37,7 @@ module mdio_generador_testbench;
     .mdio_out(mdio_out),
     .mdio_oe(mdio_oe),
     .rd_data(rd_data),
-    .data_rdy(rd_data)
+    .data_rdy(data_rdy)
     );
 
     mdio_tester tester(
@@ -39,4 +48,5 @@ module mdio_generador_testbench;
     .mdio_in(mdio_in)
     );
 endmodule
+
 
