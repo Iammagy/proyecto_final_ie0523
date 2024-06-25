@@ -13,43 +13,38 @@ module mdio_tester
     initial begin
         // Initialize Inputs
         clk = 0;
-        reset = 1;
+        reset = 0;
         mdio_start = 0;
         t_data = 0;
         mdio_in = 0;
 
         // Wait for global reset to finish
-        #100;
-        reset = 0;
+        #10;
+        reset = 1;
         #10
-        
 
         // Write transaction
-        t_data = 32'h6AB87654;
+        t_data = 32'h9AB87652;
         mdio_start = 1'b1;
         #10;
         mdio_start = 1'b0;
-        #175;
+        #670; //Finish write transaction
 
-        mdio_in=1;
-        #10 mdio_in=0;
-
-        #10 mdio_in=1;
-             #10 mdio_in=0;
-
-       #10 mdio_in=1;
-             #10 mdio_in=0;
+        //Read transaction
+        t_data = 32'h2AB8AAAA;
+        mdio_start = 1'b1;
+        #10;
+        mdio_start = 1'b0;
+        #305;
+        repeat (8) begin
+            #20 mdio_in=1;
+            #20 mdio_in=0;
+        end
         
         // Continue simulating data bits as necessary
-        #500; // Wait for the remaining cycles
-
-        #200;
-        reset = 1;
+        #100 reset = 0;
 
         // End of simulation
         $finish;
     end
-
 endmodule
-
-
