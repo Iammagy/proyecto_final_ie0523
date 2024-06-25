@@ -16,8 +16,8 @@ module mdio_receptor (
     reg state;
     parameter IDLE = 1'b0, ACTIVE = 1'b1;
 
-    always @(posedge MDC or posedge RESET) begin
-        if (RESET) begin
+    always @(posedge MDC or negedge RESET) begin
+        if (!RESET) begin  //RESET activo en bajo
             MDIO_DONE <= 0;
             MDIO_IN <= 0;
             ADDR <= 0;
