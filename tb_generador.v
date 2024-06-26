@@ -7,15 +7,6 @@ module mdio_generador_testbench;
     wire mdio_start;
     wire [31:0] t_data;
     wire mdio_in;
-    wire mdc;`include "generador.v"
-`include "tester_generador.v"
-
-module mdio_generador_testbench;
-    wire clk;
-    wire reset;
-    wire mdio_start;
-    wire [31:0] t_data;
-    wire mdio_in;
     wire mdc;
     wire mdio_out;
     wire mdio_oe;

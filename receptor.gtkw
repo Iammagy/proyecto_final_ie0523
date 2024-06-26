@@ -1,0 +1,29 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Wed Jun 26 01:39:31 2024
+[*]
+[dumpfile] "/home/magy/Documents/Proyecto MDIO/tb.vcd"
+[dumpfile_mtime] "Wed Jun 26 01:38:19 2024"
+[dumpfile_size] 3300
+[savefile] "/home/magy/Documents/Proyecto MDIO/receptor.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*-6.000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_mdio_receptor.
+[sst_width] 233
+[signals_width] 126
+[sst_expanded] 1
+[sst_vpaned_height] 144
+@28
+tb_mdio_receptor.uut.MDC
+tb_mdio_receptor.uut.MDIO_OUT
+tb_mdio_receptor.uut.RESET
+@22
+tb_mdio_receptor.uut.counter[4:0]
+@28
+tb_mdio_receptor.uut.tipo[1:0]
+@23
+tb_mdio_receptor.uut.REGADR[4:0]
+[pattern_trace] 1
+[pattern_trace] 0

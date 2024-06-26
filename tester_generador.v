@@ -24,14 +24,14 @@ module mdio_tester
         #10
 
         // Write transaction
-        t_data = 32'h9AB87652;
+        t_data = 32'h5AB87652;
         mdio_start = 1'b1;
         #10;
         mdio_start = 1'b0;
         #670; //Finish write transaction
 
         //Read transaction
-        t_data = 32'h2AB8AAAA;
+        t_data = 32'h6AB8AAAA;
         mdio_start = 1'b1;
         #10;
         mdio_start = 1'b0;
@@ -42,8 +42,9 @@ module mdio_tester
         end
         
         // Continue simulating data bits as necessary
-        #100 reset = 0;
-
+        #100;
+        reset = 0;
+        #100;
         // End of simulation
         $finish;
     end

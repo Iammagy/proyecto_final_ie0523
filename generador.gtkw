@@ -1,0 +1,31 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Wed Jun 26 00:30:11 2024
+[*]
+[dumpfile] "/home/magy/Documents/Proyecto MDIO/tb.vcd"
+[dumpfile_mtime] "Wed Jun 26 00:29:53 2024"
+[dumpfile_size] 5313
+[savefile] "/home/magy/Documents/Proyecto MDIO/generador.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*-9.048909 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] mdio_generador_testbench.
+[sst_width] 233
+[signals_width] 134
+[sst_expanded] 1
+[sst_vpaned_height] 144
+@28
+mdio_generador_testbench.DUT.clk
+mdio_generador_testbench.DUT.mdc
+mdio_generador_testbench.DUT.mdio_in
+mdio_generador_testbench.DUT.mdio_oe
+mdio_generador_testbench.DUT.mdio_start
+@22
+mdio_generador_testbench.DUT.rd_data[15:0]
+@28
+mdio_generador_testbench.DUT.reset
+@23
+mdio_generador_testbench.DUT.t_data[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
