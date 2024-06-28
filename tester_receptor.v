@@ -9,7 +9,6 @@ module tb_mdio_receptor;
     wire MDIO_IN;
     input [4:0] ADDR;
     input [15:0] WR_DATA;
-    reg [15:0] RD_DATA;
     wire WR_STB;
 
     mdio_receptor uut (
@@ -21,7 +20,6 @@ module tb_mdio_receptor;
         .MDIO_IN(MDIO_IN),
         .ADDR(ADDR),
         .WR_DATA(WR_DATA),
-        .RD_DATA(RD_DATA),
         .WR_STB(WR_STB)
     );
 
@@ -31,76 +29,88 @@ module tb_mdio_receptor;
         RESET = 0;
         MDIO_OUT = 0;
         MDIO_OE = 0;
-        RD_DATA = 16'hABCD;
         #10 RESET = 1;
 
         // Simulate MDIO write transaction
-        MDIO_OE = 1;
-        #5 MDIO_OUT = 1;  // Start bit
-        #8 MDIO_OUT = 0;  // Opcode (Write)
-        #4 MDIO_OUT = 1;
-        #9 MDIO_OUT = 0;
-        #6 MDIO_OUT = 0;  // PHY address
-        #11 MDIO_OUT = 1;
-        #15 MDIO_OUT = 1;
-        #11 MDIO_OUT = 0;
+        #5 MDIO_OE = 1;
+
+        // Start bit
+        #10 MDIO_OUT = 0;  
         #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 1;  // Register address
+
+        // Opcode (Write)
+        #10 MDIO_OUT = 0;
+        #10 MDIO_OUT = 1;
+
+        // PHY address (13)
+        #10 MDIO_OUT = 0;  
+        #10 MDIO_OUT = 1;
+        #10 MDIO_OUT = 1;
+        #10 MDIO_OUT = 0;
+        #10 MDIO_OUT = 1;
+
+        // Register address and TA
+        #10 MDIO_OUT = 1;  
         #10 MDIO_OUT = 0;
         #10 MDIO_OUT = 1;
         #10 MDIO_OUT = 0;
         #10 MDIO_OUT = 1;
         #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 1;  // Data
+        #10 MDIO_OUT = 1; 
+        
+         // Data (43AE)
         #10 MDIO_OUT = 0;
         #10 MDIO_OUT = 1;
         #10 MDIO_OUT = 0;
+        #10 MDIO_OUT = 0;
+
+        #10 MDIO_OUT = 0;
+        #10 MDIO_OUT = 0;
         #10 MDIO_OUT = 1;
         #10 MDIO_OUT = 1;
+
         #10 MDIO_OUT = 1;
         #10 MDIO_OUT = 0;
         #10 MDIO_OUT = 1;
         #10 MDIO_OUT = 0;
+
         #10 MDIO_OUT = 1;
         #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 1;  // Stop bit
+        #10 MDIO_OUT = 1;  
         #10 MDIO_OUT = 0;
+        MDIO_OE = 0;
+
 
         // Simulate MDIO read transaction
-        #50;
-        MDIO_OE = 1;
-        #10 MDIO_OUT = 1;  // Start bit
-        #10 MDIO_OUT = 0;  // Opcode (Read)
+        // Start bit
+        #100 MDIO_OE = 1;
+
+        // Start bit
+        #10 MDIO_OUT = 0;  
         #10 MDIO_OUT = 1;
+
+        // Opcode (Read)
         #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 0;
-        #10 MDIO_OUT = 1;  // PHY address
-        #10 MDIO_OUT = 0;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 0;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 1;  // Register address
-        #10 MDIO_OUT = 0;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 0;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 1;  // Data
-        #10 MDIO_OUT = 0;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 0;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 0;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 0;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 1;  // Stop bit
         #10 MDIO_OUT = 0;
 
-        #100 $finish;
+        // PHY address (3)
+        #10 MDIO_OUT = 0;  
+        #10 MDIO_OUT = 0;
+        #10 MDIO_OUT = 0;
+        #10 MDIO_OUT = 1;
+        #10 MDIO_OUT = 1;
+
+        // Register address and TA
+        #10 MDIO_OUT = 1;  
+        #10 MDIO_OUT = 0;
+        #10 MDIO_OUT = 1;
+        #10 MDIO_OUT = 0;
+        #10 MDIO_OUT = 1;
+        #10 MDIO_OUT = 1;
+        #10 MDIO_OUT = 1; 
+        MDIO_OE = 0;
+
+        #300 $finish;
     end
 
     always #5 MDC = ~MDC;
@@ -108,5 +118,8 @@ module tb_mdio_receptor;
     initial begin
         $dumpfile("tb.vcd");
         $dumpvars;
+        $dumpvars(0, uut.mem[13]);
+        $dumpvars(0, uut.mem[5]);
+
     end
 endmodule
