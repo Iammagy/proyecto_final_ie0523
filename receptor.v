@@ -18,10 +18,10 @@ module mdio_receptor (
     
     integer i;
     initial begin
-        for (i = 0; i < 5; i = i + 1) begin
+        for (i = 0; i < 32; i = i + 1) begin
             mem[i] = 16'b0;
             if (i==3) begin   //En la posición 3 de memoria almacenamos AAAA
-                mem[i] = 16'hAAAA;
+                mem[i] = 16'h3AAA;
             end
         end
     end
@@ -32,7 +32,6 @@ module mdio_receptor (
                ACTIVE = 4'd8;
 
 
-    // Propuesta: Tres estados: IDLE, lectura, escritura.
     always @(posedge MDC or negedge RESET) begin
     if (!RESET) begin  //RESET activo en bajo
         MDIO_DONE <= 0;
@@ -110,7 +109,7 @@ always @(posedge MDC) begin
         end
 
         READ: begin
-            if (counter>=32) begin
+            if (counter>=31) begin
             MDIO_DONE = 1;
             state = IDLE;
             end

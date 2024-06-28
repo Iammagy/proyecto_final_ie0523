@@ -42,11 +42,11 @@ module tb_mdio_receptor;
         #10 MDIO_OUT = 0;
         #10 MDIO_OUT = 1;
 
-        // PHY address (13)
+        // PHY address (7)
         #10 MDIO_OUT = 0;  
-        #10 MDIO_OUT = 1;
-        #10 MDIO_OUT = 1;
         #10 MDIO_OUT = 0;
+        #10 MDIO_OUT = 1;
+        #10 MDIO_OUT = 1;
         #10 MDIO_OUT = 1;
 
         // Register address and TA
@@ -118,8 +118,8 @@ module tb_mdio_receptor;
     initial begin
         $dumpfile("tb.vcd");
         $dumpvars;
-        $dumpvars(0, uut.mem[13]);
-        $dumpvars(0, uut.mem[5]);
+        $dumpvars(0, uut.mem[7]);
+        $dumpvars(0, uut.mem[3]);
 
     end
 endmodule
