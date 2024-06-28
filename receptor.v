@@ -21,7 +21,7 @@ module mdio_receptor (
         for (i = 0; i < 32; i = i + 1) begin
             mem[i] = 16'b0;
             if (i==3) begin   //En la posición 3 de memoria almacenamos AAAA
-                mem[i] = 16'h3AAA;
+                mem[i] = 16'h2AAA;
             end
         end
     end
